@@ -11,31 +11,61 @@ I2C = 0x1
 CAL = 0x2
 I = 0x3
 
+#Read Rate
+READ_RATE = 1.0
+
 #I2C Address / Bus
 addr = 0x63
 bus = SMBus(1)
 
 def main():
-	read =CmdRead()
-
+	READ_RATE=1.0
 	while True :
 		cmd = raw_input("Command : ")
 	
 		if cmd =='Help':
-			print("Start / Stop / Rate / I2C / Cal ")
+			print("Read / Rate / I2C / Cal ")
 
 		#request for reading
-		elif cmd == 'Start':
-			print("Start reading")
-			read.readStart()
+		elif cmd == 'Read':
+			print("Start reading (Stop : Ctrl + c )")
+			print("Read-Rate is %.2f "% READ_RATE)
+			#read.readStart()
 
-		elif cmd == 'Stop':
-			print("Stop reading")
-			read.readStop()
+			try:
+				while True :
+					#send READ cmd to the sensor
+					bus.write_byte(addr,READ)
+		
+					#receive data from sensor
+					global res
+					res="" 
+					data = bus.read_i2c_block_data(addr,0, 32)
+		
+					for i in range(len(data)):
+						tmp = chr(data[i])
 
+						if tmp !='.' and (tmp <'0' or tmp >'9'):
+							break;
+						res += tmp
+					
+					#write the data 
+					print("%s ppm" % res)
+					res += "\n"
+					data=""
+
+					#sleep
+					time.sleep(READ_RATE)
+
+			except KeyboardInterrupt :
+					print("Stop reading")
+		
 		elif cmd == 'Rate':
 			new_rate = input("Enter New Reading Rate : ")
-			read.changeReadRate(new_rate)
+			
+			#check before changing
+			if True :
+				READ_RATE = new_rate
 
 		#change the i2c address
 		elif cmd == 'I2C':
@@ -89,7 +119,7 @@ class CmdRead :
 		
 	def readStart(self):
 		#open data file
-		self.f= open("data_DO.txt", "a")
+		self.f= open("data_pH.txt", "a")
 
 		#send READ cmd to the sensor
 		bus.write_byte(addr,READ)
