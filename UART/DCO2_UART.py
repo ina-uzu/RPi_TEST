@@ -5,7 +5,7 @@ import time
 from serial import SerialException
 
 PORT = "/dev/ttyUSB0"
-BAUD_RATE = 38400
+BAUD_RATE = 9600
 
 def read_data():
 	buf =[]
