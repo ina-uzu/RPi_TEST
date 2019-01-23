@@ -17,17 +17,16 @@ DATA_MAX_LENGTH = 20
 TERMINATOR = 255
 
 #I2C Address / Bus
-DO_ADDR = 0x63
+PH_ADDR = 0x63
 bus = SMBus(1)
 
 def main():
+        print("1.Read")
+        print("2.Rate")
+        print("3.I2C Address Check")
+        print("4.Cal")
+        print("5.Quit")
 
-        print ("1. Read")
-        print ("2. Rate")
-        print ("3. I2C address check")
-        print ("4. Cal")
-        print ("5. Quit")
-        
 	READ_RATE=1.0
 	while True :
 		cmd = raw_input("Command : ")
@@ -46,22 +45,22 @@ def main():
 					#send READ cmd to the sensor & receive data from sensor
 					global res
 					res="" 
-					data = bus.read_i2c_block_data(DO_ADDR,READ,DATA_MAX_LENGTH)
-                                        for i in range(len(data)):
+					data = bus.read_i2c_block_data(PH_ADDR,READ,DATA_MAX_LENGTH)
+					for i in range(len(data)):
 						if i == 0:
 							print("Response Code is %d" % int(data[i]))
 							continue
 						tmp = chr(data[i])
-                                                if ord(tmp)==TERMINATOR:
-                                                    break
+                                                if ord(tmp) == TERMINATOR:
+                                                    break    
                                                 '''
-                                                if tmp !='.' and (tmp <'0' or tmp >'9'):
+						if tmp !='.' and (tmp <'0' or tmp >'9'):
 							break
 						'''
                                                 res += tmp
 					
 					#write the data 
-					print("%s ppm" % res)
+					print("%s pH" % res)
 					data=""
 
 					#sleep
@@ -81,7 +80,7 @@ def main():
 
 		#change the i2c address
 		elif cmd == 'I2C':
-			data = bus.read_i2c_block_data(DO_ADDR,I2C,5)
+			data = bus.read_i2c_block_data(PH_ADDR,I2C,5)
 			addr=""
 			for i in range(len(data)):
 				if i == 0:
@@ -100,14 +99,14 @@ def main():
 			if new_addr >0xff or new_addr<0 :
 				print("Invalid Address")
 			else :
-				bus.write_byte(DO_ADDR, I)	
-				bus.write_byte(DO_ADDR, new_addr)
+				bus.write	
+				bus.write_byte(PH_ADDR, new_addr)
 				#addr= new_addr
 
 		#Calibration
 		elif cmd == 'Cal':
-			bus.write_byte(DO_ADDR, CAL)
-                        code = bus.read_byte(DO_ADDR)
+			bus.write_byte(PH_ADDR, CAL)
+                        code = bus.read_byte(PH_ADDR)
                         print("Response Code is %d" % code)
 			print("Calibration done!")
 
@@ -141,12 +140,12 @@ class CmdRead :
 		self.f= open("data_pH.txt", "a")
 
 		#send READ cmd to the sensor
-		bus.write_byte(DO_ADDR,READ)
+		bus.write_byte(PH_ADDR,READ)
 		
 		#receive data from sensor
 		global res
 		res="" 
-		data = bus.read_i2c_block_data(DO_ADDR,0,DATA_MAX_LENGTH)
+		data = bus.read_i2c_block_data(PH_ADDR,0,DATA_MAX_LENGTH)
 		
 		for i in range(len(data)):
 			tmp = chr(data[i])
