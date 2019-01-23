@@ -4,7 +4,7 @@ import string
 import time
 from serial import SerialException
 
-PORT = "/dev/serial0"
+PORT = "/dev/ttyUSB0"
 BAUD_RATE = 9600
 
 def read_data():
@@ -13,7 +13,6 @@ def read_data():
 	
 	while True :
 		tmp = ser.read(1)
-		print tmp
 		if tmp == " " and cnt<2:
 			cnt = cnt+1
 			continue
@@ -35,7 +34,7 @@ if __name__ == "__main__":
 		sys.exit(0)
 	
 	print("1. Read" )
-	print("3. Cal")
+	print("3. Cal (No) ")
 	print("4. Quit")
 
 	# Get command
