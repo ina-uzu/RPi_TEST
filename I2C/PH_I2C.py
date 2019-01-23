@@ -17,7 +17,7 @@ DATA_MAX_LENGTH = 20
 TERMINATOR = 255
 
 #I2C Address / Bus
-PH_ADDR = 0x63
+PH_ADDR = 0x64
 bus = SMBus(1)
 
 def main():
