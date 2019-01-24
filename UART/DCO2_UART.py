@@ -4,7 +4,7 @@ import string
 import time
 from serial import SerialException
 
-PORT = "/dev/serial0"
+PORT = "/dev/ttyS0"
 BAUD_RATE = 9600
 
 def read_data():

@@ -4,7 +4,7 @@ import string
 import time
 from serial import SerialException
 
-PORT = "/dev/serial0"
+PORT = "/dev/ttyS0"
 BAUD_RATE = 9600
 
 def read_data():
@@ -61,14 +61,20 @@ if __name__ == "__main__":
 
 			# Cont - Reading
 			if whatCmd[0] == "C" :
-				print("Start Reading")
-				while True:
-					try :
-						time.sleep(0.8)
-						read_data()
-					except KeyboardInterrupt :
-						send_cmd("C,0")
-						break
+                            try:    
+                                RATE = int(whatCmd[1])
+                            except ValueError as e:
+                                print("Invalid Read Rate")
+
+                            print("Start Reading")
+                            print("Read Rate is %d" % RATE)
+			    while True:
+			    	try :
+		    		    read_data()
+	    			    time.sleep(RATE)
+    				except KeyboardInterrupt :		    
+                                    send_cmd("C,0")
+                                    break
 			
 			# 1 Reading 
 			elif whatCmd[0] =="R" :
