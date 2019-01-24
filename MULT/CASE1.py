@@ -85,7 +85,7 @@ class Master :
         pass
 
 def main():
-    
+    READ_RATE = 1.0 
     master = Master() 
     
     print("1. Read")
@@ -110,7 +110,11 @@ def main():
                     break
 
         elif cmd == "Rate" :
-            pass 
+            try:
+                READ_RATE = float(raw_input('Enter new Read Rate '))
+            except ValueError:
+                print('Invalid Read Rate')
+        
         elif cmd == "Cal" :
             pass
         elif cmd == "Quit" :
