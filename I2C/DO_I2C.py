@@ -17,7 +17,7 @@ DATA_MAX_LENGTH = 20
 TERMINATOR = 255
 
 #I2C Address / Bus
-DO_ADDR = 0x63
+DO_ADDR = 100
 bus = SMBus(1)
 
 def main():
@@ -54,10 +54,9 @@ def main():
 						tmp = chr(data[i])
                                                 if ord(tmp)==TERMINATOR:
                                                     break
-                                                '''
+                                                
                                                 if tmp !='.' and (tmp <'0' or tmp >'9'):
 							break
-						'''
                                                 res += tmp
 					
 					#write the data 

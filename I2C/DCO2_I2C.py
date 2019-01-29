@@ -66,7 +66,6 @@ def main():
 			print("Wrong commnand")
 
 def send_cal_cmd():
-	" WRITE "
 	#send start signal & check response
 	while bus.write_byte(ADDR, START) == BUSY :
 		pass
@@ -78,7 +77,6 @@ def send_cal_cmd():
 	bus.write_byte(ADDR, END)
 
 
-	" READ "
 	#send start signal & check response
 	while bus.write_byte(ADDR, START) == BUSY :
 		pass
@@ -89,8 +87,6 @@ def send_cal_cmd():
 	return data
 
 def send_read_cmd() :
-	
-	" WRITE "
 	#send start signal & check response
 	while bus.write_byte(ADDR, START) == BUSY :
 		pass
@@ -101,8 +97,6 @@ def send_read_cmd() :
 	#send stop signal 
 	bus.write_byte(ADDR, READ)
 
-
-	" READ "
 	#send start signal & check response
 	while bus.write_byte(ADDR, START) == BUSY :
 		pass
@@ -115,7 +109,6 @@ def send_read_cmd() :
 						
 	#write the data 
 	print("%d ppm" % res)
-
 		
 if __name__=='__main__' :
 	main()
